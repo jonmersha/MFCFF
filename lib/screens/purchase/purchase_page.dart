@@ -151,9 +151,9 @@
 //   }
 // }
 import 'package:flutter/material.dart';
-import '../widgets/purchase/procurement_header.dart';
-import '../widgets/purchase/intake_summary_ribbon.dart';
-import '../widgets/purchase/po_tracking_card.dart';
+import '../../widgets/purchase/procurement_header.dart';
+import '../../widgets/purchase/intake_summary_ribbon.dart';
+import '../../widgets/purchase/po_tracking_card.dart';
 
 class PurchasePage extends StatefulWidget {
   const PurchasePage({super.key});

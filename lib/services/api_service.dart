@@ -126,6 +126,20 @@ class ApiService {
     }
   }
 
+
+  Future<dynamic> getUpdate(String url) async {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: await _getHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      // This can now safely return a Map or a List
+      return jsonDecode(response.body);
+    } else {
+      throw Exception("Failed to load data: ${response.statusCode}");
+    }
+  }
   // Generic POST request
   Future<http.Response> post(String url, Map<String, dynamic> data) async {
     return await http.post(

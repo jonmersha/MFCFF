@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mfco/widgets/sales/customer_selector.dart';
-import '../widgets/sales/sales_header.dart';
-import '../widgets/sales/product_card.dart';
-import '../widgets/sales/order_summary_footer.dart';
+import '../../widgets/sales/sales_header.dart';
+import '../../widgets/sales/product_card.dart';
+import '../../widgets/sales/order_summary_footer.dart';
 
 class SalesPage extends StatefulWidget {
   const SalesPage({super.key});

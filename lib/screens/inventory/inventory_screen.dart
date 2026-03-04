@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/silos/silo_card.dart'; // Ensure this path is correct
+import '../../widgets/silos/silo_card.dart'; // Ensure this path is correct
 
 class InventoryPage extends StatelessWidget {
   const InventoryPage({super.key});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/Core/admin_region_model.dart';
+import '../../models/Core/city_model.dart';
 import '../../models/Core/company_model.dart';
 import '../../models/Core/factory_model.dart';
 import '../../services/api_service.dart';

@@ -303,9 +303,9 @@ import '../../services/api_service.dart';
 
 // Page Imports
 import 'dashboard_screen.dart';
-import '../inventory_screen.dart';
-import '../sales_page.dart';
-import '../purchase_page.dart';
+import '../inventory/inventory_screen.dart';
+import '../sales/sales_page.dart';
+import '../purchase/purchase_page.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

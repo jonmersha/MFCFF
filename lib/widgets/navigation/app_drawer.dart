@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mfco/screens/core/company_list_page.dart';
 import 'package:mfco/screens/core/factory_list_page.dart';
+import 'package:mfco/screens/customer/customer_list.dart';
 import 'package:mfco/screens/inventory/product_list_page.dart';
 import 'package:mfco/screens/inventory/warehouse_list_page.dart';
+import 'package:mfco/screens/suppliers/suppliers_list_page.dart';
 import 'package:mfco/screens/user_profile/profile_screen.dart';
 import '../../core/utils/auth_utils.dart';
+import '../../screens/core/admin_regin_page.dart';
 
 class AppDrawer extends StatelessWidget {
   // Swapped username for specific name fields
@@ -37,6 +40,19 @@ class AppDrawer extends StatelessWidget {
               children: [
                 // Inside the ListView of your AppDrawer...
                 _buildSectionTitle("STRUCTURAL CORE"),
+                _buildMenuItem(
+                  Icons.policy,
+                  "Admin Region",
+                      () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => const AdminRegionPage(),
+                      ),
+                    );
+                  },
+                ),
                 _buildMenuItem(Icons.business_outlined, "Company Setup", () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -75,6 +91,35 @@ class AppDrawer extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (c) => const ProductListPage(),
+                      ),
+                    );
+                  },
+                ),
+                _buildSectionTitle("Sales Module"),
+                _buildMenuItem(
+                  Icons.factory_outlined,
+                  "Customers",
+                      () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => const CustomerListPage(),
+                      ),
+                    );
+                  },
+                ),
+
+                _buildSectionTitle("Purchase Module"),
+                _buildMenuItem(
+                  Icons.factory_outlined,
+                  "Suppliers",
+                      () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => const SupplierListPage(),
                       ),
                     );
                   },

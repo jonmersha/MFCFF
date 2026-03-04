@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../models/Core/factory_model.dart';
-import '../../services/api_service.dart';
-import '../../core/constants/api_constants.dart';
-import '../../widgets/core/create_factory_form.dart';
+import '../../../models/Core/factory_model.dart';
+import '../../../services/api_service.dart';
+import '../../../core/constants/api_constants.dart';
+import '../../../widgets/core/create_factory_form.dart';
 
 class FactoryDetailsPage extends StatefulWidget {
   final Factory factory;
