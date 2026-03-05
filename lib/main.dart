@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'core/constants/theme_constants.dart';
 import 'screens/main_screen/main_screen.dart';
 import 'screens/user_profile/login_screen.dart'; // Ensure this is imported
 
@@ -26,18 +27,8 @@ class MFCErp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Milki Flour ERP',
-      theme: ThemeData(
-        // Using ColorScheme is the modern way to set primary colors in Flutter
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF5D4037),
-          primary: const Color(0xFF5D4037),
-        ),
-        fontFamily: 'Roboto',
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF5D4037),
-          foregroundColor: Colors.white,
-        ),
-      ),
+      theme:  AppTheme.lightTheme,
+
       // 4. Conditional Home: Redirect based on token existence
       home: isLoggedIn ? MainScreen() : LoginScreen(),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/purchase/purchase.dart';
+import '../../models/purchase/supplier_model.dart';
 import '../../services/api_service.dart';
 import '../../core/constants/api_constants.dart'; // Use the constants we made
 import 'supplier_detail_page.dart';

@@ -8,6 +8,9 @@ import 'package:mfco/screens/suppliers/suppliers_list_page.dart';
 import 'package:mfco/screens/user_profile/profile_screen.dart';
 import '../../core/utils/auth_utils.dart';
 import '../../screens/core/admin_regin_page.dart';
+import '../../screens/purchase/goods_receiving_note.dart';
+import '../../screens/purchase/order_list.dart';
+import '../../screens/purchase/purchase_order.dart';
 
 class AppDrawer extends StatelessWidget {
   // Swapped username for specific name fields
@@ -111,6 +114,7 @@ class AppDrawer extends StatelessWidget {
                 ),
 
                 _buildSectionTitle("Purchase Module"),
+
                 _buildMenuItem(
                   Icons.factory_outlined,
                   "Suppliers",
@@ -124,6 +128,47 @@ class AppDrawer extends StatelessWidget {
                     );
                   },
                 ),
+                _buildMenuItem(
+                  Icons.factory_outlined,
+                  "PO",
+                      () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => const PurchaseOrderListPage(),
+                      ),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  Icons.factory_outlined,
+                  "Goods Receiving",
+                      () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => const GRNListPage(),
+                      ),
+                    );
+                  },
+                ),
+                _buildSectionTitle("Inventory"),
+                _buildMenuItem(
+                  Icons.factory_outlined,
+                  "Stock",
+                      () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => const PurchaseOrderListPage(),
+                      ),
+                    );
+                  },
+                ),
+
                 _buildSectionTitle("CORE MODULES"),
                 _buildMenuItem(
                   Icons.dashboard_outlined,

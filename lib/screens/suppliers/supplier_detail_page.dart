@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../models/purchase/purchase.dart';
+import '../../models/purchase/supplier_model.dart';
 import '../../services/api_service.dart';
 import '../../widgets/supplier/supplier_form_page.dart';
 
