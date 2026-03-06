@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mfco/screens/purchase/purchase_order_details.dart';
+import 'package:mfco/screens/purchase/purchase_order_form.dart';
 import '../../models/purchase/purchase_order_model.dart';
 import '../../services/api_service.dart';
 import '../../core/constants/api_constants.dart';
@@ -50,6 +51,20 @@ class _PurchaseOrderListPageState extends State<PurchaseOrderListPage> {
       appBar: AppBar(
         title: const Text("Purchase Orders"),
         // No need to set backgroundColor here if defined in AppBarTheme
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to your PO Creation Screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const CreatePurchaseOrderPage()),
+          ).then((value) {
+            // Refresh the list when returning
+            if (value == true) _fetchOrders();
+          });
+        },
+        backgroundColor: primaryColor,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator(color: primaryColor))
