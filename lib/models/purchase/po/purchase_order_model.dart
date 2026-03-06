@@ -40,7 +40,7 @@ class PurchaseOrder {
       totalAmount: (json['total_amount'] as num).toDouble(),
       itemCount: json['item_count'],
       items: (json['items'] as List)
-          .map((i) => PurchaseOrderItem.fromJson(i))
+          .map((item) => PurchaseOrderItem.fromJson(item))
           .toList(),
     );
   }

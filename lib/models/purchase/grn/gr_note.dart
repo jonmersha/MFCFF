@@ -1,4 +1,4 @@
-import 'package:mfco/models/purchase/r_note_items.dart';
+import 'package:mfco/models/purchase/grn/r_note_items.dart';
 
 class GoodsReceivingNote {
   final int? id;

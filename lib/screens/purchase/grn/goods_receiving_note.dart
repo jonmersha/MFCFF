@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For date formatting
-import '../../core/constants/api_constants.dart';
-import '../../models/purchase/goods_receiving_note_model.dart';
-import '../../models/purchase/gr_note.dart';
-import '../../services/api_service.dart';
+import '../../../core/constants/api_constants.dart';
+import '../../../models/purchase/grn/goods_receiving_note_model.dart';
+import '../../../models/purchase/grn/gr_note.dart';
+import '../../../services/api_service.dart';
 import 'gnr_details.dart';
 
 class GRNListPage extends StatefulWidget {

@@ -11,21 +11,19 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _api = ApiService();
   final _formKey = GlobalKey<FormState>();
+  final Color kDeepGreen = const Color(0xFF1B5E20);
 
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _userController = TextEditingController();
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
-  final _confirmPassController = TextEditingController(); // New Controller
+  final _confirmPassController = TextEditingController();
 
   bool _isLoading = false;
-  final Color kDeepGreen = const Color(0xFF1B5E20);
 
   void _handleSignup() async {
-    // 1. Validate Form (Includes the password match check below)
     if (!_formKey.currentState!.validate()) return;
-
     setState(() => _isLoading = true);
 
     final success = await _api.signUp({
@@ -34,136 +32,105 @@ class _SignupScreenState extends State<SignupScreen> {
       "username": _userController.text,
       "email": _emailController.text,
       "password": _passController.text,
-      "re_password":
-          _confirmPassController.text, // Sending both to Django/Djoser
+      "re_password": _confirmPassController.text,
     });
 
     setState(() => _isLoading = false);
-
-    if (success) {
+    if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Account created! Please login.")),
       );
       Navigator.pop(context);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Signup failed. Check details or connection."),
-        ),
-      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Register Staff"),
         backgroundColor: kDeepGreen,
+        elevation: 0,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Text(
-                "Staff Credentials",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-
-              // Name Fields
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildField(
-                      _firstNameController,
-                      "First Name",
-                      Icons.person,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _buildField(
-                      _lastNameController,
-                      "Last Name",
-                      Icons.person,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-
-              // Identity Fields
-              _buildField(_userController, "Username", Icons.account_box),
-              const SizedBox(height: 15),
-              _buildField(
-                _emailController,
-                "Email",
-                Icons.email,
-                isEmail: true,
-              ),
-              const SizedBox(height: 15),
-
-              // PASSWORD FIELD
-              _buildField(
-                _passController,
-                "Password",
-                Icons.lock_outline,
-                isPassword: true,
-              ),
-              const SizedBox(height: 15),
-
-              // CONFIRM PASSWORD FIELD
-              TextFormField(
-                controller: _confirmPassController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Confirm Password",
-                  prefixIcon: Icon(Icons.lock_reset, color: kDeepGreen),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty)
-                    return "Please confirm password";
-                  if (value != _passController.text)
-                    return "Passwords do not match";
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 40),
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: kDeepGreen),
-                  onPressed: _isLoading ? null : _handleSignup,
-                  child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          "CREATE ACCOUNT",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                ),
-              ),
-            ],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: isLandscape
+                ? Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(child: _buildHeader()),
+                const SizedBox(width: 40),
+                Expanded(child: _buildSignupForm()),
+              ],
+            )
+                : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 40),
+                _buildSignupForm(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildField(
-    TextEditingController controller,
-    String label,
-    IconData icon, {
-    bool isPassword = false,
-    bool isEmail = false,
-  }) {
+  Widget _buildHeader() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.person_add, size: 90, color: kDeepGreen),
+        const SizedBox(height: 20),
+        Text("CREATE ACCOUNT", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: kDeepGreen, letterSpacing: 1.2)),
+        const Text("Join the Milki Flour ERP team", style: TextStyle(color: Colors.grey)),
+      ],
+    );
+  }
+
+  Widget _buildSignupForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(child: _buildField(_firstNameController, "First Name", Icons.person_outline)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildField(_lastNameController, "Last Name", Icons.person_outline)),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildField(_userController, "Username", Icons.account_box_outlined),
+          const SizedBox(height: 20),
+          _buildField(_emailController, "Email", Icons.email_outlined, isEmail: true),
+          const SizedBox(height: 20),
+          _buildField(_passController, "Password", Icons.lock_outline, isPassword: true),
+          const SizedBox(height: 20),
+          _buildField(_confirmPassController, "Confirm Password", Icons.lock_reset, isPassword: true, isConfirm: true),
+          const SizedBox(height: 35),
+          SizedBox(
+            width: double.infinity,
+            height: 55,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: kDeepGreen, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              onPressed: _isLoading ? null : _handleSignup,
+              child: _isLoading ? const CircularProgressIndicator(color: Colors.white) : const Text("REGISTER", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildField(TextEditingController controller, String label, IconData icon, {bool isPassword = false, bool isEmail = false, bool isConfirm = false}) {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
@@ -171,11 +138,12 @@ class _SignupScreenState extends State<SignupScreen> {
         labelText: label,
         prefixIcon: Icon(icon, color: kDeepGreen),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: kDeepGreen, width: 2)),
       ),
       validator: (v) {
         if (v == null || v.isEmpty) return "Required";
         if (isEmail && !v.contains("@")) return "Invalid email";
-        if (isPassword && v.length < 8) return "Min 8 characters";
+        if (isConfirm && v != _passController.text) return "Passwords do not match";
         return null;
       },
     );

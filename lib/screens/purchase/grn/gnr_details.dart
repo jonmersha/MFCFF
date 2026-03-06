@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../models/purchase/gr_note.dart';
+import '../../../models/purchase/grn/gr_note.dart';
 
 class GRNDetailPage extends StatelessWidget {
   final GoodsReceivingNote grn;

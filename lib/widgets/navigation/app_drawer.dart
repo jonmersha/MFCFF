@@ -6,11 +6,11 @@ import 'package:mfco/screens/inventory/product_list_page.dart';
 import 'package:mfco/screens/inventory/warehouse_list_page.dart';
 import 'package:mfco/screens/suppliers/suppliers_list_page.dart';
 import 'package:mfco/screens/user_profile/profile_screen.dart';
+
 import '../../core/utils/auth_utils.dart';
 import '../../screens/core/admin_regin_page.dart';
-import '../../screens/purchase/goods_receiving_note.dart';
-import '../../screens/purchase/order_list.dart';
-import '../../screens/purchase/purchase_order.dart';
+import '../../screens/purchase/grn/goods_receiving_note.dart';
+import '../../screens/purchase/po/purchase_order_list.dart';
 
 class AppDrawer extends StatelessWidget {
   // Swapped username for specific name fields
@@ -136,7 +136,7 @@ class AppDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (c) => const PurchaseOrderListPage(),
+                        builder: (c) =>  PurchaseOrderListPage(),
                       ),
                     );
                   },
@@ -163,7 +163,7 @@ class AppDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (c) => const PurchaseOrderListPage(),
+                        builder: (c) =>  PurchaseOrderListPage(),
                       ),
                     );
                   },
