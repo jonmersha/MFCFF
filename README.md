@@ -1,312 +1,262 @@
-# Milki System ERP
+
+# Milki Mobile ERP App
 
 ## Overview
 
-Milki System is a **Centralized Enterprise Resource Planning (ERP) platform** designed for **Milki Food Complex** to manage and automate core operational processes across multiple factory locations and warehouses.
+Milki Mobile ERP is a **Flutter-based mobile application** designed to provide employees and managers of **Milki Food Complex** with real-time access to operational workflows.
 
-The system integrates critical business functions such as **inventory management, procurement, sales, logistics, finance tracking, and user management** into a single unified platform.
+The application connects to the **Milki ERP backend APIs** and allows staff to perform tasks such as:
 
-The goal of this system is to eliminate fragmented workflows and manual record keeping, enabling **real-time operational visibility, better decision making, and improved accountability across departments**. 
+* Managing inventory
+* Processing purchase orders
+* Recording goods receiving
+* Tracking sales orders
+* Managing customers and suppliers
+* Monitoring stock movements
+* Viewing operational dashboards
 
----
-
-# Business Problem
-
-Milki Food Complex operates across several factories and warehouses with increasing operational complexity. Currently many processes are handled manually or through disconnected tools.
-
-Key operational challenges include:
-
-* Lack of centralized visibility of inventory across warehouses
-* Manual tracking of stock movements and orders
-* Poor traceability of order lifecycle
-* Limited linkage between shipments and payments
-* Difficulty managing product categories and pricing
-* Weak accountability due to undefined workflows
-* Lack of real-time reporting and dashboards
-
-The Milki System ERP addresses these challenges by providing a **centralized digital platform** for managing the full operational lifecycle. 
+The mobile app enables **field staff, warehouse personnel, and managers** to interact with the system anytime and anywhere.
 
 ---
 
-# System Objectives
+# Features
 
-The primary objectives of the system include:
+## Inventory Management
 
-* Centralize operational workflows across departments
-* Improve inventory visibility across warehouses and factories
-* Automate procurement and sales processes
-* Enable real-time tracking of orders and shipments
-* Improve financial monitoring and payment tracking
-* Enhance employee accountability through role-based workflows
-* Provide dashboards and reports for management decision-making
+The mobile application provides tools for warehouse staff to manage stock.
+
+Capabilities include:
+
+* View warehouse inventory
+* Track stock levels in real time
+* Monitor inventory movements
+* View product details
+* Track stock changes
 
 ---
 
-# Core Modules
+## Purchase Order Management
 
-The ERP system consists of the following modules.
-
-## 1. Inventory Management
-
-Manages product stock across factories and warehouses.
+Users can manage procurement activities directly from their mobile device.
 
 Features:
 
-* Multi-warehouse inventory tracking
-* Real-time stock visibility
-* Inventory movement tracking
-* Product lifecycle management
-* Stock alerts and reconciliation
+* Create purchase orders
+* Add items to purchase orders
+* Update order status
+* Track supplier orders
+* Monitor order progress
 
 ---
 
-## 2. Procurement Management
+## Goods Receiving
 
-Handles purchasing of raw materials and goods from suppliers.
+Warehouse staff can register received goods.
 
 Features:
 
-* Supplier registration and management
-* Purchase requisitions
-* Purchase order generation
-* Goods receiving
-* Purchase tracking and reporting
+* Record goods received from suppliers
+* Verify quantities received
+* Update inventory automatically
+* Attach notes or remarks
+* Track receiving history
 
-Workflow:
+---
+
+## Sales Order Management
+
+Sales teams can manage customer orders through the app.
+
+Features:
+
+* Create sales orders
+* Track order status
+* View customer details
+* Monitor payment status
+* Review order history
+
+---
+
+## Customer & Supplier Management
+
+The mobile app provides quick access to customer and supplier information.
+
+Features:
+
+* View customer profiles
+* View supplier information
+* Access contact details
+* Track transaction history
+
+---
+
+## Role-Based Access
+
+The system supports **role-based access control** to ensure users only see what they are authorized to access.
+
+Example roles include:
+
+* Admin
+* Warehouse Staff
+* Sales Staff
+* Procurement Officers
+* Finance Staff
+
+---
+
+# Technology Stack
+
+The mobile application is built using modern technologies.
+
+| Layer             | Technology                                               |
+| ----------------- | -------------------------------------------------------- |
+| Mobile Framework  | Flutter                                                  |
+| Language          | Dart                                                     |
+| State Management  | Provider / Riverpod / Bloc (depending on implementation) |
+| API Communication | REST APIs                                                |
+| Authentication    | Token-based authentication                               |
+| Backend           | Django / REST API                                        |
+| Database          | MySQL / PostgreSQL                                       |
+
+---
+
+# Application Architecture
+
+The Flutter application follows a **modular and scalable architecture**.
 
 ```
-Purchase Request
-      ↓
-Approval
-      ↓
-Purchase Order
-      ↓
-Vendor Fulfillment
-      ↓
-Goods Receipt
-      ↓
-Inventory Update
-```
-
----
-
-## 3. Sales & Order Management
-
-Manages customer orders and product sales.
-
-Features:
-
-* Customer order creation
-* Order lifecycle tracking
-* Pricing and quantity management
-* Order fulfillment tracking
-* Payment status monitoring
-
-Order Lifecycle:
-
-```
-Draft → Confirmed → Shipped → Delivered → Paid
-```
-
----
-
-## 4. Logistics & Shipment Tracking
-
-Supports product dispatch and delivery operations.
-
-Features:
-
-* Shipment planning
-* Route assignment
-* Delivery tracking
-* Shipment status updates
-* Proof of delivery
-
----
-
-## 5. Finance & Payment Tracking
-
-Tracks financial transactions related to orders and purchases.
-
-Features:
-
-* Payment recording
-* Outstanding payment monitoring
-* Aging reports
-* Financial alerts
-
----
-
-## 6. Customer Relationship Management (CRM)
-
-Manages customer interactions and support.
-
-Features:
-
-* Customer profile management
-* Customer communication tracking
-* Complaint management
-* Engagement reporting
-
----
-
-## 7. Human Resource Management (HRM)
-
-Handles employee data and workforce management.
-
-Features:
-
-* Employee profiles
-* Attendance tracking
-* Leave management
-* Performance tracking
-* Payroll base data export
-
----
-
-## 8. User & Role Management
-
-Controls system access and user permissions.
-
-Features:
-
-* Role-based access control
-* Permission management
-* User activity logging
-* Segregation of duties enforcement
-* Security auditing
-
----
-
-# System Architecture
-
-The system follows a **modular architecture**, allowing each business domain to function independently while remaining integrated.
-
-Example architecture:
-
-```
-Frontend (Web / Mobile)
-        │
-        │
-REST API Layer
-        │
-        │
-Backend Services
-        │
- ├ Inventory Service
- ├ Procurement Service
- ├ Sales Service
- ├ Finance Service
- ├ HR Service
- └ CRM Service
-        │
-        │
-Database Layer
+lib
+│
+├ core
+│   ├ constants
+│   ├ services
+│   └ utilities
+│
+├ models
+│   ├ inventory
+│   ├ purchase
+│   ├ sales
+│   └ users
+│
+├ providers
+│
+├ screens
+│   ├ dashboard
+│   ├ inventory
+│   ├ purchase_orders
+│   ├ goods_receiving
+│   ├ sales_orders
+│   └ customers
+│
+├ widgets
+│
+└ main.dart
 ```
 
 ---
 
-# Database Overview
+# Key Screens
 
-The system uses a **relational database structure** with core entities such as:
+The mobile app includes the following major screens.
 
-### Core Entities
+### Dashboard
 
-* Company
-* Factory
-* Warehouses
-* Products
-* Inventory
-* Inventory Movement
-* Purchase Orders
-* Sales Orders
-* Suppliers
-* Customers
-* System Users
-* Roles and Permissions
-* Audit Logs
+Provides a quick overview of:
 
-Example tables from the schema:
-
-* `Company`
-* `Factory`
-* `Warehouses`
-* `Products`
-* `Inventory`
-* `Inventory_Movement`
-* `Purchase_Order`
-* `Sales_Order`
-* `Suppliers`
-* `Customers`
-* `System_Users`
-
-The schema also implements **authorization tracking and audit trails** for accountability. 
+* Inventory status
+* Pending orders
+* Recent transactions
+* Alerts
 
 ---
 
-# Security Features
+### Inventory Screen
 
-The system includes several security mechanisms:
+Allows users to:
 
-* Role-based access control
-* User permission management
-* Audit logging of system actions
-* Login monitoring
-* Segregation of duty enforcement
-* Authorization tracking for sensitive operations
+* View available stock
+* Check product details
+* Track inventory movements
 
 ---
 
-# Non-Functional Requirements
+### Purchase Orders
 
-The system is designed to support enterprise-level reliability.
+Used to:
 
-Key characteristics:
-
-* Web-based and mobile-responsive interface
-* Scalable architecture
-* Secure authentication and encryption
-* Multilingual support (Amharic / English)
-* REST API integration capability
-* Backup and disaster recovery readiness
+* Create purchase orders
+* Add items
+* Update order status
+* Track supplier deliveries
 
 ---
 
-# Future Enhancements
+### Goods Receiving
 
-Planned future improvements include:
+Used by warehouse staff to:
 
-* AI-based inventory forecasting
-* Mobile field sales applications
-* Barcode and scanner integration
-* Integration with financial platforms
-* Sustainability and compliance tracking
-* Export logistics modules
+* Record incoming products
+* Verify quantities
+* Update stock
+
+---
+
+### Sales Orders
+
+Allows sales staff to:
+
+* Create orders
+* Track order status
+* View customer orders
+
+---
+
+### Customer Management
+
+Provides access to:
+
+* Customer profiles
+* Contact information
+* Order history
 
 ---
 
 # Installation
 
-Example setup steps:
+## 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-org/milki-system.git
-cd milki-system
+git clone https://github.com/your-org/milki-mobile-app.git
+cd milki-mobile-app
 ```
 
-Database setup:
+---
+
+## 2. Install dependencies
 
 ```bash
-mysql -u root -p < milki2.sql
+flutter pub get
 ```
 
-Run backend service:
+---
 
-```bash
-python manage.py runserver
+## 3. Configure API Endpoint
+
+Update the API base URL in:
+
+```
+lib/core/constants/api_constants.dart
 ```
 
-Run frontend:
+Example:
+
+```dart
+const String baseUrl = "http://your-backend-server/api/";
+```
+
+---
+
+## 4. Run the application
 
 ```bash
 flutter run
@@ -314,52 +264,61 @@ flutter run
 
 ---
 
-# Project Structure
+# Environment Requirements
 
-Example project layout:
+Before running the application, ensure the following are installed:
 
-```
-milki-system
-│
-├ backend
-│   ├ inventory
-│   ├ procurement
-│   ├ sales
-│   ├ finance
-│   └ users
-│
-├ frontend
-│   ├ mobile_app
-│   └ web_app
-│
-├ database
-│   └ milki2.sql
-│
-├ docs
-│   └ business_requirements.md
-│
-└ README.md
+* Flutter SDK
+* Dart SDK
+* Android Studio or VS Code
+* Android Emulator or Physical Device
+
+Check Flutter installation:
+
+```bash
+flutter doctor
 ```
 
 ---
 
-# Stakeholders
+# Permissions
 
-The primary stakeholders include:
+The mobile app may require the following permissions:
 
-* Executive Management
-* Warehouse Staff
-* Procurement Officers
-* Sales & Marketing Team
-* Logistics Coordinators
-* Finance Department
-* HR Department
-* System Administrators
+* Internet access
+* Camera (for future barcode scanning)
+* Storage access (for file uploads)
+* Location (for logistics features)
+
+---
+
+# Future Enhancements
+
+Planned improvements for the mobile app include:
+
+* Barcode scanning for inventory
+* Offline mode for warehouse operations
+* Push notifications for order updates
+* Delivery tracking with GPS
+* Mobile dashboards with analytics
+* Image upload for proof of delivery
+
+---
+
+# Contributors
+
+Milki System Development Team
+
+* Backend Developers
+* Mobile Developers
+* System Analysts
+* ERP Consultants
 
 ---
 
 # License
 
-This project is proprietary and intended for internal use by **Milki Food Complex**.
+This project is proprietary software developed for **Milki Food Complex**.
 
+Unauthorized distribution or modification is not permitted.
 
