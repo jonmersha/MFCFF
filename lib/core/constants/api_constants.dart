@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = "http://10.11.243.236:8000";
+  static const String baseUrl = "http://10.203.201.17:8000";
   // Auth Endpoints (Djoser)
   static const String login = "$baseUrl/auth/jwt/create/";
   static const String signUp = "$baseUrl/auth/users/";
