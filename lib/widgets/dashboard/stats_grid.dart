@@ -5,13 +5,18 @@ class StatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Detect orientation
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return GridView.count(
-      crossAxisCount: 2,
+      // 4 columns for landscape, 2 for portrait
+      crossAxisCount: isLandscape ? 4 : 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      childAspectRatio: 1.5,
+      // Adjust ratio so cards don't look too tall in landscape
+      childAspectRatio: isLandscape ? 1.8 : 1.5,
       children: const [
         StatCard("Daily Sales", "42,500", Icons.trending_up, Colors.green),
         StatCard("Pending POs", "12", Icons.hourglass_empty, Colors.orange),
@@ -31,6 +36,8 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -41,13 +48,20 @@ class StatCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: color, size: 28),
+          Icon(icon, color: color, size: isLandscape ? 24 : 28), // Slightly smaller icons in landscape
           const SizedBox(height: 5),
           Text(
             value,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: isLandscape ? 16 : 18,
+                fontWeight: FontWeight.bold
+            ),
           ),
-          Text(title, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 11, color: Colors.grey)
+          ),
         ],
       ),
     );

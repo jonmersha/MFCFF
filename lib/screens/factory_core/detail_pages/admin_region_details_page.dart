@@ -4,8 +4,8 @@ import '../../../models/Core/city_model.dart';
 import 'city_details_page.dart';
 import '../../../services/api_service.dart';
 import '../../../core/constants/api_constants.dart';
-import '../../../widgets/core/create_city_form.dart';
-import '../../../widgets/core/admin_reion_form.dart'; // Ensure correct spelling of your file
+import '../../../widgets/factory_core/create_city_form.dart';
+import '../../../widgets/factory_core/admin_reion_form.dart'; // Ensure correct spelling of your file
 
 class AdminRegionDetailsPage extends StatefulWidget {
   final AdminRegion region;

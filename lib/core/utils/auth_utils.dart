@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../screens/user_profile/login_screen.dart';
+
+import '../user_profile/login_screen.dart';
 
 class AuthUtils {
   static Future<void> showLogoutDialog(BuildContext context) async {

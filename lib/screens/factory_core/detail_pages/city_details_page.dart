@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/Core/city_model.dart';
-import '../../../widgets/core/create_city_form.dart';
+import '../../../widgets/factory_core/create_city_form.dart';
 import '../../../services/api_service.dart';
 import '../../../core/constants/api_constants.dart';
 

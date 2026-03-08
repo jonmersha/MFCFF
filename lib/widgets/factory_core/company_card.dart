@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/Core/company_model.dart';
-import '../../screens/core/detail_pages/company_detail.dart';
+import '../../screens/factory_core/detail_pages/company_detail.dart';
 
 class CompanyCard extends StatelessWidget {
   final Company company;

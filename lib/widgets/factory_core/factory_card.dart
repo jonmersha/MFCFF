@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/Core/factory_model.dart';
-import '../../screens/core/detail_pages/factory_details_page.dart';
+import '../../screens/factory_core/detail_pages/factory_details_page.dart';
 
 class FactoryCard extends StatelessWidget {
   final Factory factory;

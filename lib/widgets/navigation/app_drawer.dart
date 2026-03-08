@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mfco/screens/core/company_list_page.dart';
-import 'package:mfco/screens/core/factory_list_page.dart';
+import 'package:mfco/screens/factory_core/company_list_page.dart';
+import 'package:mfco/screens/factory_core/factory_list_page.dart';
 import 'package:mfco/screens/customer/customer_list.dart';
 import 'package:mfco/screens/inventory/product_list_page.dart';
 import 'package:mfco/screens/inventory/warehouse_list_page.dart';
 import 'package:mfco/screens/suppliers/suppliers_list_page.dart';
-import 'package:mfco/screens/user_profile/profile_screen.dart';
 
+import '../../core/user_profile/profile_screen.dart';
 import '../../core/utils/auth_utils.dart';
-import '../../screens/core/admin_regin_page.dart';
+import '../../screens/factory_core/admin_regin_page.dart';
 import '../../screens/purchase/grn/goods_receiving_note.dart';
 import '../../screens/purchase/po/purchase_order_list.dart';
 

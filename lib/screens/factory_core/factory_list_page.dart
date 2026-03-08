@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../models/Core/factory_model.dart';
 import '../../services/api_service.dart';
 import '../../core/constants/api_constants.dart';
-import '../../widgets/core/factory_card.dart';
-import '../../widgets/core/create_factory_form.dart';
+import '../../widgets/factory_core/factory_card.dart';
+import '../../widgets/factory_core/create_factory_form.dart';
 
 class FactoryListPage extends StatefulWidget {
   const FactoryListPage({super.key});

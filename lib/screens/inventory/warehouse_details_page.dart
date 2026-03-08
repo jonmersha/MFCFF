@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mfco/models/inventory/warehouse_model.dart';
-import 'package:mfco/widgets/core/create_warehouse_form.dart';
+import 'package:mfco/widgets/factory_core/create_warehouse_form.dart';
 import '../../services/api_service.dart';
 import '../../core/constants/api_constants.dart';
 

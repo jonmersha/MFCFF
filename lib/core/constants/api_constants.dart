@@ -5,10 +5,10 @@ class ApiConstants {
   static const String signUp = "$baseUrl/auth/users/";
   static const String userProfile = "$baseUrl/auth/users/me/";
   // Core
-  static const String companies = "$baseUrl/core/companies/";
-  static const String factories = "$baseUrl/core/factories/";
-  static const String regions = "$baseUrl/core/admin-regions/";
-  static const String cities = "$baseUrl/core/cities/";
+  static const String companies = "$baseUrl/factory_core/companies/";
+  static const String factories = "$baseUrl/factory_core/factories/";
+  static const String regions = "$baseUrl/factory_core/admin-regions/";
+  static const String cities = "$baseUrl/factory_core/cities/";
 
   // Sales
   static const String salesOrders = "$baseUrl/sales/orders/";

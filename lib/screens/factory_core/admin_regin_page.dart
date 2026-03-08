@@ -3,7 +3,7 @@ import '../../models/Core/admin_region_model.dart';
 import '../../services/api_service.dart';
 import '../../core/constants/api_constants.dart';
 import 'detail_pages/admin_region_details_page.dart';
-import '../../widgets/core/admin_reion_form.dart';
+import '../../widgets/factory_core/admin_reion_form.dart';
 
 class AdminRegionPage extends StatefulWidget {
   const AdminRegionPage({super.key});

@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
-// import 'package:mfco/screens/core/company_detail.dart';
+// import 'package:mfco/screens/factory_core/company_detail.dart';
 // import '../../models/Core/company_model.dart';
 // import '../../services/api_service.dart';
-// import '../../core/constants/api_constants.dart';
+// import '../../factory_core/constants/api_constants.dart';
 
 // class CompanyListPage extends StatefulWidget {
 //   const CompanyListPage({super.key});
@@ -200,7 +200,7 @@
 
 //       if (_isEditMode) {
 //         // 2. Perform UPDATE (PUT)
-//         // URL uses the tracker string: /core/companies/CMP-XXXXX/
+//         // URL uses the tracker string: /factory_core/companies/CMP-XXXXX/
 //         response = await _apiService.put(
 //           "${ApiConstants.companies}${widget.existingCompany!.tracker}/",
 //           payload,
@@ -376,8 +376,8 @@ import 'package:flutter/material.dart';
 import '../../models/Core/company_model.dart';
 import '../../services/api_service.dart';
 import '../../core/constants/api_constants.dart';
-import '../../widgets/core/company_card.dart'; // Import Custom Widget
-import '../../widgets/core/create_company_form.dart'; // Import Custom Form
+import '../../widgets/factory_core/company_card.dart'; // Import Custom Widget
+import '../../widgets/factory_core/create_company_form.dart'; // Import Custom Form
 
 class CompanyListPage extends StatefulWidget {
   const CompanyListPage({super.key});

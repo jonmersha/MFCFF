@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mfco/models/Core/company_model.dart';
 import '../../../services/api_service.dart';
 import '../../../core/constants/api_constants.dart';
-import '../../../widgets/core/create_company_form.dart';
+import '../../../widgets/factory_core/create_company_form.dart';
 
 class CompanyDetailsPage extends StatefulWidget {
   final Company company;

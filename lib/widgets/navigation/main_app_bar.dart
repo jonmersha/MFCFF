@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mfco/screens/user_profile/profile_screen.dart';
+import '../../core/user_profile/profile_screen.dart';
 import '../../core/utils/auth_utils.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {

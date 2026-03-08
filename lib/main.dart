@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'core/constants/theme_constants.dart';
-import 'screens/main_screen/main_screen.dart';
-import 'screens/user_profile/login_screen.dart'; // Ensure this is imported
+import 'core/user_profile/login_screen.dart';
+import 'screens/home/main_screen.dart';
 
 void main() async {
   // 1. Required when using native plugins (like Secure Storage) before runApp

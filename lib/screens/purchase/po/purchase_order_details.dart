@@ -1,38 +1,103 @@
+//
 // import 'package:flutter/material.dart';
 // import '../../../models/purchase/po/order_item_model.dart';
 // import '../../../models/purchase/po/purchase_order_model.dart';
+// import '../../../services/api_service.dart';
+// import '../../../core/constants/api_constants.dart';
+// import 'add_item.dart';
 //
-// class PODetailPage extends StatelessWidget {
-//   final PurchaseOrder order;
+// class PODetailPage extends StatefulWidget {
+//   final PurchaseOrder initialOrder;
+//   final VoidCallback? onOrderUpdated;
+//   final  bool showAppBar;
 //
-//   const PODetailPage({super.key, required this.order});
+//   const PODetailPage({
+//     super.key,
+//     required this.initialOrder,
+//     this.onOrderUpdated,
+//     this.showAppBar=true
+//   });
+//
+//   @override
+//   State<PODetailPage> createState() => _PODetailPageState();
+// }
+//
+// class _PODetailPageState extends State<PODetailPage> {
+//   late PurchaseOrder _order;
+//   bool _isRefreshing = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _order = widget.initialOrder;
+//   }
+//
+//   @override
+//   void didUpdateWidget(covariant PODetailPage oldWidget) {
+//     super.didUpdateWidget(oldWidget);
+//     // Syncs internal state if the parent rebuilds this widget with new data
+//     if (widget.initialOrder != oldWidget.initialOrder) {
+//       setState(() => _order = widget.initialOrder);
+//     }
+//   }
+//
+//   Future<void> _refreshOrder() async {
+//     setState(() => _isRefreshing = true);
+//     try {
+//       final ApiService api = ApiService();
+//       final data = await api.getUpdate("${ApiConstants.purchaseOrders}/${_order.id}");
+//       if (!mounted) return;
+//       setState(() {
+//         _order = PurchaseOrder.fromJson(data);
+//       });
+//       widget.onOrderUpdated?.call(); // Refresh parent master list
+//     } catch (e) {
+//       if (mounted) {
+//         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+//       }
+//     } finally {
+//       if (mounted) setState(() => _isRefreshing = false);
+//     }
+//   }
+//
+//   void _addItem(BuildContext context) async {
+//     final result = await Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (_) => AddItemToOrderPage(
+//           orderId: _order.id,
+//           supplierId: _order.supplier,
+//           supplierName: _order.supplierName,
+//           warehouseName: _order.warehouseName,
+//           orderTracker: _order.tracker,
+//         ),
+//       ),
+//     );
+//
+//     if (result == true) await _refreshOrder();
+//   }
 //
 //   @override
 //   Widget build(BuildContext context) {
-//
 //     final theme = Theme.of(context);
-//
-//     return Column(
-//       children: [
-//
-//         /// HEADER
-//         _buildHeader(theme),
-//
-//         const Divider(height: 1),
-//
-//         /// ITEMS
-//         Expanded(
-//           child: _buildItems(theme),
-//         ),
-//
-//         /// FOOTER
-//         _buildFooter(theme),
-//       ],
+//     return Scaffold(
+//       appBar: widget.showAppBar
+//           ? AppBar(title: Text("Order: ${_order.tracker}"))
+//           : null,
+//       body: _isRefreshing
+//           ? const Center(child: CircularProgressIndicator())
+//           : Column(
+//         children: [
+//           _buildHeader(theme),
+//           const Divider(height: 1),
+//           Expanded(child: _buildItems(theme)),
+//           _buildFooter(theme),
+//         ],
+//       ),
 //     );
 //   }
 //
 //   Widget _buildHeader(ThemeData theme) {
-//
 //     return Container(
 //       width: double.infinity,
 //       padding: const EdgeInsets.all(20),
@@ -40,34 +105,24 @@
 //       child: Column(
 //         crossAxisAlignment: CrossAxisAlignment.start,
 //         children: [
-//
-//           /// ORDER NUMBER + STATUS
 //           Row(
 //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //             children: [
-//               Text(
-//                 order.tracker,
-//                 style: theme.textTheme.headlineSmall
-//                     ?.copyWith(fontWeight: FontWeight.bold),
-//               ),
-//               _statusBadge(order.status)
+//               Text(_order.tracker, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+//               ElevatedButton.icon(
+//                 icon: const Icon(Icons.add),
+//                 label: const Text("Add Item"),
+//                 onPressed: () => _addItem(context),
+//               )
 //             ],
 //           ),
-//
 //           const SizedBox(height: 16),
-//
-//           /// INFO GRID
-//           Wrap(
-//             spacing: 40,
-//             runSpacing: 12,
-//             children: [
-//               _info("Supplier", order.supplierName, theme),
-//               _info("Warehouse", order.warehouseName, theme),
-//               _info("Order Date",
-//                   order.orderDate.toString().split(' ')[0], theme),
-//               _info("Items", order.itemCount.toString(), theme),
-//             ],
-//           )
+//           Wrap(spacing: 40, runSpacing: 12, children: [
+//             _info("Supplier", _order.supplierName, theme),
+//             _info("Warehouse", _order.warehouseName, theme),
+//             _info("Order Date", _order.orderDate.toString().split(' ')[0], theme),
+//             _info("Items", _order.items.length.toString(), theme),
+//           ])
 //         ],
 //       ),
 //     );
@@ -77,167 +132,176 @@
 //     return Column(
 //       crossAxisAlignment: CrossAxisAlignment.start,
 //       children: [
-//         Text(label,
-//             style: theme.textTheme.bodySmall
-//                 ?.copyWith(color: Colors.grey)),
-//         const SizedBox(height: 2),
-//         Text(value,
-//             style: theme.textTheme.bodyLarge
-//                 ?.copyWith(fontWeight: FontWeight.w600)),
+//         Text(label, style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey)),
+//         Text(value, style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600)),
 //       ],
 //     );
 //   }
 //
 //   Widget _buildItems(ThemeData theme) {
-//
-//     return ListView(
+//     return ListView.builder(
 //       padding: const EdgeInsets.all(16),
-//       children: [
-//
-//         /// TABLE HEADER
-//         Row(
-//           children: const [
-//             Expanded(flex: 4, child: Text("Product")),
-//             Expanded(child: Text("Qty")),
-//             Expanded(child: Text("Price")),
-//             Expanded(child: Text("Total")),
-//           ],
-//         ),
-//
-//         const Divider(),
-//
-//         ...order.items.map((item) => _itemRow(item, theme)).toList()
-//       ],
+//       itemCount: _order.items.length + 1,
+//       itemBuilder: (context, index) {
+//         if (index == 0) return _tableHeader();
+//         final item = _order.items[index - 1];
+//         return _itemRow(item, theme);
+//       },
 //     );
 //   }
 //
-//   Widget _itemRow(PurchaseOrderItem item, ThemeData theme) {
+//   Widget _tableHeader() => const Padding(
+//     padding: EdgeInsets.only(bottom: 8),
+//     child: Row(children: [
+//       Expanded(flex: 4, child: Text("Product", style: TextStyle(fontWeight: FontWeight.bold))),
+//       Expanded(child: Text("Qty", style: TextStyle(fontWeight: FontWeight.bold))),
+//       Expanded(child: Text("Price", style: TextStyle(fontWeight: FontWeight.bold))),
+//       Expanded(child: Text("Total", style: TextStyle(fontWeight: FontWeight.bold))),
+//       SizedBox(width: 40)
+//     ]),
+//   );
 //
+//   Widget _itemRow(PurchaseOrderItem item, ThemeData theme) {
 //     return Container(
 //       padding: const EdgeInsets.symmetric(vertical: 12),
-//       child: Row(
-//         children: [
-//
-//           Expanded(
-//             flex: 4,
-//             child: Text(item.productName),
-//           ),
-//
-//           Expanded(
-//             child: Text(item.quantity.toString()),
-//           ),
-//
-//           Expanded(
-//             child: Text("\$${item.unitPrice.toStringAsFixed(2)}"),
-//           ),
-//
-//           Expanded(
-//             child: Text(
-//               "\$${item.lineTotal.toStringAsFixed(2)}",
-//               style: TextStyle(
-//                 fontWeight: FontWeight.bold,
-//                 color: theme.primaryColor,
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
+//       child: Row(children: [
+//         Expanded(flex: 4, child: Text(item.productName)),
+//         Expanded(child: Text(item.quantity.toString())),
+//         Expanded(child: Text("\$${item.unitPrice.toStringAsFixed(2)}")),
+//         Expanded(
+//             child: Text("\$${item.lineTotal.toStringAsFixed(2)}",
+//                 style: TextStyle(fontWeight: FontWeight.bold, color: theme.primaryColor))
+//         ),
+//         IconButton(icon: const Icon(Icons.edit, size: 20), onPressed: () {}),
+//       ]),
 //     );
 //   }
 //
 //   Widget _buildFooter(ThemeData theme) {
-//
 //     return Container(
 //       padding: const EdgeInsets.all(20),
-//       decoration: BoxDecoration(
-//         color: theme.cardColor,
-//         border: Border(top: BorderSide(color: theme.dividerColor)),
-//       ),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//
-//           Text(
-//             "Grand Total",
-//             style: theme.textTheme.titleLarge,
-//           ),
-//
-//           Text(
-//             "\$${order.totalAmount.toStringAsFixed(2)}",
-//             style: theme.textTheme.headlineSmall?.copyWith(
-//               fontWeight: FontWeight.bold,
-//               color: theme.primaryColor,
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _statusBadge(String status) {
-//
-//     Color color =
-//     status == "Completed" ? Colors.green : Colors.orange;
-//
-//     return Container(
-//       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-//       decoration: BoxDecoration(
-//         color: color.withOpacity(.1),
-//         borderRadius: BorderRadius.circular(20),
-//       ),
-//       child: Text(
-//         status,
-//         style: TextStyle(
-//           color: color,
-//           fontWeight: FontWeight.bold,
-//         ),
-//       ),
+//       decoration: BoxDecoration(color: theme.cardColor, border: Border(top: BorderSide(color: theme.dividerColor))),
+//       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+//         Text("Grand Total", style: theme.textTheme.titleLarge),
+//         Text("\$${_order.totalAmount.toStringAsFixed(2)}",
+//             style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: theme.primaryColor)),
+//       ]),
 //     );
 //   }
 // }
 
 import 'package:flutter/material.dart';
+import 'package:mfco/screens/purchase/po/update_items.dart';
 import '../../../models/purchase/po/order_item_model.dart';
 import '../../../models/purchase/po/purchase_order_model.dart';
+import '../../../services/api_service.dart';
+import '../../../core/constants/api_constants.dart';
+import 'add_item.dart';
+// Ensure this matches your file name
 
-class PODetailPage extends StatelessWidget {
+class PODetailPage extends StatefulWidget {
+  final PurchaseOrder initialOrder;
+  final VoidCallback? onOrderUpdated;
+  final bool showAppBar;
 
-  final PurchaseOrder order;
+  const PODetailPage({
+    super.key,
+    required this.initialOrder,
+    this.onOrderUpdated,
+    this.showAppBar = true,
+  });
 
-  const PODetailPage({super.key, required this.order});
+  @override
+  State<PODetailPage> createState() => _PODetailPageState();
+}
+
+class _PODetailPageState extends State<PODetailPage> {
+  late PurchaseOrder _order;
+  bool _isRefreshing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _order = widget.initialOrder;
+  }
+
+  @override
+  void didUpdateWidget(covariant PODetailPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialOrder != oldWidget.initialOrder) {
+      setState(() => _order = widget.initialOrder);
+    }
+  }
+
+  Future<void> _refreshOrder() async {
+    setState(() => _isRefreshing = true);
+    try {
+      final ApiService api = ApiService();
+      final data = await api.getUpdate("${ApiConstants.purchaseOrders}/${_order.id}");
+      if (!mounted) return;
+      setState(() {
+        _order = PurchaseOrder.fromJson(data);
+      });
+      widget.onOrderUpdated?.call();
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+    } finally {
+      if (mounted) setState(() => _isRefreshing = false);
+    }
+  }
+
+  void _addItem(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddItemToOrderPage(
+          orderId: _order.id,
+          supplierId: _order.supplier,
+          supplierName: _order.supplierName,
+          warehouseName: _order.warehouseName,
+          orderTracker: _order.tracker,
+        ),
+      ),
+    );
+    if (result == true) await _refreshOrder();
+  }
+
+  // Navigates to the edit/delete page for a specific item
+  void _editItem(PurchaseOrderItem item) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => EditItem(
+          itemId: item.id,
+          initialItem: item,
+          supplierName: _order.supplierName,
+          warehouseName: _order.warehouseName,
+          orderTracker: _order.tracker,
+        ),
+      ),
+    );
+    if (result == true) await _refreshOrder();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     final theme = Theme.of(context);
-
     return Scaffold(
-      body: Column(
+      appBar: widget.showAppBar ? AppBar(title: Text("Order: ${_order.tracker}")) : null,
+      body: _isRefreshing
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
         children: [
-
-          /// HEADER
-          _buildHeader(context, theme),
-
+          _buildHeader(theme),
           const Divider(height: 1),
-
-          /// ITEMS
-          Expanded(
-            child: _buildItems(context, theme),
-          ),
-
-          /// FOOTER
+          Expanded(child: _buildItems(theme)),
           _buildFooter(theme),
         ],
       ),
     );
   }
 
-  /// ---------------------------------------------------------
-  /// HEADER
-  /// ---------------------------------------------------------
-
-  Widget _buildHeader(BuildContext context, ThemeData theme) {
-
+  Widget _buildHeader(ThemeData theme) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -245,271 +309,85 @@ class PODetailPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          /// ORDER NUMBER + ACTIONS
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
-              Row(
-                children: [
-                  Text(
-                    order.tracker,
-                    style: theme.textTheme.headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 16),
-                  _statusBadge(order.status),
-                ],
-              ),
-
-              /// ADD ITEM BUTTON
+              Text(_order.tracker, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
               ElevatedButton.icon(
                 icon: const Icon(Icons.add),
                 label: const Text("Add Item"),
-                onPressed: () {
-                  _addItem(context);
-                },
+                onPressed: () => _addItem(context),
               )
             ],
           ),
-
           const SizedBox(height: 16),
-
-          /// INFO GRID
-          Wrap(
-            spacing: 40,
-            runSpacing: 12,
-            children: [
-              _info("Supplier", order.supplierName, theme),
-              _info("Warehouse", order.warehouseName, theme),
-              _info("Order Date",
-                  order.orderDate.toString().split(' ')[0], theme),
-              _info("Items", order.itemCount.toString(), theme),
-            ],
-          )
+          Wrap(spacing: 40, runSpacing: 12, children: [
+            _info("Supplier", _order.supplierName, theme),
+            _info("Warehouse", _order.warehouseName, theme),
+            _info("Order Date", _order.orderDate.toString().split(' ')[0], theme),
+            _info("Items", _order.items.length.toString(), theme),
+          ])
         ],
       ),
     );
   }
 
-  Widget _info(String label, String value, ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label,
-            style: theme.textTheme.bodySmall
-                ?.copyWith(color: Colors.grey)),
-        const SizedBox(height: 2),
-        Text(value,
-            style: theme.textTheme.bodyLarge
-                ?.copyWith(fontWeight: FontWeight.w600)),
-      ],
-    );
-  }
+  Widget _info(String label, String value, ThemeData theme) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(label, style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey)),
+      Text(value, style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600)),
+    ],
+  );
 
-  /// ---------------------------------------------------------
-  /// ITEMS LIST
-  /// ---------------------------------------------------------
-
-  Widget _buildItems(BuildContext context, ThemeData theme) {
-
-    return ListView(
+  Widget _buildItems(ThemeData theme) {
+    return ListView.builder(
       padding: const EdgeInsets.all(16),
-      children: [
-
-        /// TABLE HEADER
-        Row(
-          children: const [
-            Expanded(flex: 4, child: Text("Product")),
-            Expanded(child: Text("Qty")),
-            Expanded(child: Text("Price")),
-            Expanded(child: Text("Total")),
-            Expanded(child: Text("Status")),
-            SizedBox(width: 80)
-          ],
-        ),
-
-        const Divider(),
-
-        ...order.items.map((item) => _itemRow(context, item, theme)).toList()
-      ],
+      itemCount: _order.items.length + 1,
+      itemBuilder: (context, index) {
+        if (index == 0) return _tableHeader();
+        return _itemRow(_order.items[index - 1], theme);
+      },
     );
   }
 
-  Widget _itemRow(
-      BuildContext context,
-      PurchaseOrderItem item,
-      ThemeData theme,
-      ) {
+  Widget _tableHeader() => const Padding(
+    padding: EdgeInsets.only(bottom: 8),
+    child: Row(children: [
+      Expanded(flex: 4, child: Text("Product", style: TextStyle(fontWeight: FontWeight.bold))),
+      Expanded(child: Text("Qty", style: TextStyle(fontWeight: FontWeight.bold))),
+      Expanded(child: Text("Price", style: TextStyle(fontWeight: FontWeight.bold))),
+      Expanded(child: Text("Total", style: TextStyle(fontWeight: FontWeight.bold))),
+      SizedBox(width: 40)
+    ]),
+  );
 
+  Widget _itemRow(PurchaseOrderItem item, ThemeData theme) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-
-          /// PRODUCT
-          Expanded(
-            flex: 4,
-            child: Text(item.productName),
-          ),
-
-          /// QTY
-          Expanded(
-            child: Text(item.quantity.toString()),
-          ),
-
-          /// PRICE
-          Expanded(
-            child: Text("\$${item.unitPrice.toStringAsFixed(2)}"),
-          ),
-
-          /// TOTAL
-          Expanded(
-            child: Text(
-              "\$${item.lineTotal.toStringAsFixed(2)}",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: theme.primaryColor,
-              ),
-            ),
-          ),
-
-          /// STATUS DROPDOWN
-          Expanded(
-            child: DropdownButton<String>(
-              value: item.status,
-              isExpanded: true,
-              items: const [
-                DropdownMenuItem(value: "Pending", child: Text("Pending")),
-                DropdownMenuItem(value: "Confirmed", child: Text("Confirmed")),
-                DropdownMenuItem(value: "Received", child: Text("Received")),
-              ],
-              onChanged: (value) {
-                _updateItemStatus(context, item, value!);
-              },
-            ),
-          ),
-
-          /// ACTIONS
-          Row(
-            children: [
-
-              IconButton(
-                icon: const Icon(Icons.edit, size: 20),
-                onPressed: () {
-                  _editItem(context, item);
-                },
-              ),
-
-              IconButton(
-                icon: const Icon(Icons.delete, size: 20, color: Colors.red),
-                onPressed: () {
-                  _deleteItem(context, item);
-                },
-              ),
-            ],
-          )
-        ],
-      ),
+      child: Row(children: [
+        Expanded(flex: 4, child: Text(item.productName)),
+        Expanded(child: Text(item.quantity.toString())),
+        Expanded(child: Text("\$${item.unitPrice.toStringAsFixed(2)}")),
+        Expanded(child: Text("\$${item.lineTotal.toStringAsFixed(2)}",
+            style: TextStyle(fontWeight: FontWeight.bold, color: theme.primaryColor))),
+        IconButton(
+          icon: const Icon(Icons.edit, size: 20),
+          onPressed: () => _editItem(item), // Navigate to Edit Page
+        ),
+      ]),
     );
   }
-
-  /// ---------------------------------------------------------
-  /// FOOTER
-  /// ---------------------------------------------------------
 
   Widget _buildFooter(ThemeData theme) {
-
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        border: Border(top: BorderSide(color: theme.dividerColor)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-
-          Text(
-            "Grand Total",
-            style: theme.textTheme.titleLarge,
-          ),
-
-          Text(
-            "\$${order.totalAmount.toStringAsFixed(2)}",
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.primaryColor,
-            ),
-          )
-        ],
-      ),
+      decoration: BoxDecoration(color: theme.cardColor, border: Border(top: BorderSide(color: theme.dividerColor))),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Text("Grand Total", style: theme.textTheme.titleLarge),
+        Text("\$${_order.totalAmount.toStringAsFixed(2)}", style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold, color: theme.primaryColor)),
+      ]),
     );
-  }
-
-  /// ---------------------------------------------------------
-  /// STATUS BADGE
-  /// ---------------------------------------------------------
-
-  Widget _statusBadge(String status) {
-
-    Color color =
-    status == "Completed" ? Colors.green : Colors.orange;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withOpacity(.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        status,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  /// ---------------------------------------------------------
-  /// ACTION HANDLERS
-  /// ---------------------------------------------------------
-
-  void _addItem(BuildContext context) {
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Open Add Item Form")),
-    );
-
-    /// open add item page
-  }
-
-  void _editItem(BuildContext context, PurchaseOrderItem item) {
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Edit ${item.productName}")),
-    );
-  }
-
-  void _deleteItem(BuildContext context, PurchaseOrderItem item) {
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Delete ${item.productName}")),
-    );
-  }
-
-  void _updateItemStatus(
-      BuildContext context,
-      PurchaseOrderItem item,
-      String status,
-      ) {
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("${item.productName} → $status")),
-    );
-
-    /// call API to update status
   }
 }

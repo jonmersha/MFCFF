@@ -2,7 +2,7 @@
 // import '../../models/inventory/product_model.dart';
 // import '../../models/Core/company_model.dart';
 // import '../../services/api_service.dart';
-// import '../../core/constants/api_constants.dart';
+// import '../../factory_core/constants/api_constants.dart';
 
 // class CreateProductForm extends StatefulWidget {
 //   final Color kDeepGreen;
