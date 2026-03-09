@@ -107,7 +107,7 @@ class _EditItemState extends State<EditItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Edit: ${widget.initialItem.tracker ?? 'Item'}")),
+      appBar: AppBar(title: Text("Order ID: ${widget.initialItem.tracker ?? 'Item'}")),
       body: _isLoadingData
           ? const Center(child: CircularProgressIndicator())
           : Column(

@@ -292,7 +292,7 @@ class _PODetailPageState extends State<PODetailPage> {
           ? const Center(child: CircularProgressIndicator())
           : Column(
         children: [
-          _buildHeader(theme),
+         _buildHeader(theme),
           const Divider(height: 1),
           Expanded(child: _buildItems(theme)),
           _buildFooter(theme),
@@ -312,10 +312,10 @@ class _PODetailPageState extends State<PODetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_order.tracker, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+               Text(_order.tracker, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
               ElevatedButton.icon(
                 icon: const Icon(Icons.add),
-                label: const Text("Add Item"),
+                label: const Text(""),
                 onPressed: () => _addItem(context),
               )
             ],
@@ -336,7 +336,7 @@ class _PODetailPageState extends State<PODetailPage> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(label, style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey)),
-      Text(value, style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600)),
+      Text(value, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
     ],
   );
 
