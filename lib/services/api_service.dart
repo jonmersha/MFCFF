@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -149,6 +150,41 @@ class ApiService {
     );
   }
 
+  Future<http.Response> postMultipart(
+      String url, {
+        required Map<String, String> fields,
+        Map<String, List<File>>? files,
+      }) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse(url);
+    final request = http.MultipartRequest('POST', uri);
+
+    // Add headers
+    request.headers.addAll(headers);
+
+    // Add text fields
+    request.fields.addAll(fields);
+
+    // Add files
+    if (files != null) {
+      for (final entry in files.entries) {
+        final fieldName = entry.key;
+        for (final file in entry.value) {
+          request.files.add(await http.MultipartFile.fromPath(
+            fieldName,
+            file.path,
+            contentType: http.MediaType('image', 'jpeg'), // adjust if needed
+          ));
+        }
+      }
+    }
+
+    // Send request
+    final streamResponse = await request.send();
+    return await http.Response.fromStream(streamResponse);
+  }
+
+
   // Generic PUT request (For Updates)
   Future<http.Response> put(String url, Map<String, dynamic> data) async {
     return await http.put(
@@ -171,4 +207,34 @@ class ApiService {
       body: jsonEncode(data),
     );
   }
+
+//   // Update your ApiService methods to look like this
+//   Future<http.MultipartRequest> createMultipartRequest(String method, String url) async {
+//     final uri = Uri.parse(url);
+//     final request = http.MultipartRequest(method, uri);
+//
+//     // Apply headers
+//     final headers = await _getHeaders();
+//     request.headers.addAll(headers);
+//
+//     return request;
+//   }
+//
+// // Helper to send the request and handle the stream
+//   Future<http.Response> sendMultipartRequest(http.MultipartRequest request) async {
+//     final streamedResponse = await request.send();
+//     return await http.Response.fromStream(streamedResponse);
+//   }
+// 1. Properly create the request with auth headers
+  Future<http.MultipartRequest> createMultipartRequest(String method, String url) async {
+    final request = http.MultipartRequest(method, Uri.parse(url));
+    request.headers.addAll(await _getHeaders()); // Ensure this is awaited!
+    return request;
+  }
+
+// 2. Properly send the request
+  Future<http.StreamedResponse> sendMultipartRequest(http.MultipartRequest request) async {
+    return await request.send();
+  }
+
 }
